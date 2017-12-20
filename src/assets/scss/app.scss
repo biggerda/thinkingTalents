@@ -1,0 +1,334 @@
+@charset 'utf-8';
+
+@import 'settings';
+@import "~foundation-sites/assets/foundation";
+@import './node_modules/motion-ui/motion-ui';
+@import './node_modules/foundation-sites/scss/components/top-bar';
+
+@include foundation-global-styles;
+@include foundation-grid;
+// @include foundation-flex-grid;
+@include foundation-typography;
+@include foundation-button;
+@include foundation-forms;
+// @include foundation-range-input;
+@include foundation-accordion;
+@include foundation-accordion-menu;
+@include foundation-badge;
+@include foundation-breadcrumbs;
+@include foundation-button-group;
+@include foundation-callout;
+@include foundation-card;
+@include foundation-close-button;
+@include foundation-menu;
+@include foundation-menu-icon;
+@include foundation-drilldown-menu;
+@include foundation-dropdown;
+@include foundation-dropdown-menu;
+@include foundation-responsive-embed;
+@include foundation-label;
+@include foundation-media-object;
+@include foundation-off-canvas;
+@include foundation-orbit;
+@include foundation-pagination;
+@include foundation-progress-bar;
+// @include foundation-progress-element;
+// @include foundation-meter-element;
+@include foundation-slider;
+@include foundation-sticky;
+@include foundation-reveal;
+@include foundation-switch;
+@include foundation-table;
+@include foundation-tabs;
+@include foundation-thumbnail;
+@include foundation-title-bar;
+@include foundation-tooltip;
+@include foundation-top-bar;
+@include foundation-visibility-classes;
+@include foundation-float-classes;
+// @include foundation-flex-classes;
+
+@include motion-ui-transitions;
+@include motion-ui-animations;
+
+@font-face {
+  font-family: 'Swiss Black';
+  src: url('../fonts/swiss-721-black-bt-59337c07f0848.ttf');
+}
+
+@font-face {
+  font-family: 'Stencil Std';
+  src: url('../fonts/stencil-std.ttf');
+}
+
+.text-archivo {
+  font-family: 'Archivo Black';
+}
+
+h5.quad-desc {
+    line-height: 1;
+    padding-bottom: 2px;
+}
+
+h5 {
+  font-family: 'Swiss Black';    
+}
+
+.ttheading {
+    font-family: 'Myriad Pro';
+}
+
+h2.text-archivo {
+  font-family: 'Archivo Black';
+  font-size: 20pt;
+}
+
+h1 {
+  font-size: 22pt;
+}
+
+#main-title {
+  font-size: 30pt;
+  font-weight: bold;
+  line-height: 110%;
+  margin-bottom: 0px;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+.text-stencil {
+    font-family: 'Stencil Std';
+}
+
+.bg-red {
+    background-color: rgba(255,0,0,0.4);
+    position: relative;
+    left: 70px;
+}
+
+.bg-green {
+    background-color: rgba(0,225,0,0.4);
+    position: relative;
+    right: 70px;
+}
+
+.bg-blue {
+    background-color: rgba(0,128,255,0.4);
+    position: relative;
+    left: 70px;
+}
+
+.bg-yellow {
+    background-color: rgba(255,225,0,0.4);
+    position: relative;
+    right: 70px;
+}
+
+.padded-row {
+    margin-top: 7%;
+}
+
+.margin-top-5 {
+    margin-top: 5%;
+}
+
+.margin-top-15 {
+    margin-top: 10%;
+}
+
+.quarter-column {
+  width: 25%;
+}
+
+.margin-top-1 {
+    margin-top: 2.6%;
+}
+
+.padding-top-half {
+    padding-top: 0.3%;
+}
+
+.margin-top-15 {
+    margin-bottom: 15%;
+}
+
+.margin-bottom-1 {
+    margin-bottom: 1%;
+}
+
+.margin-bottom-0 {
+    margin-bottom: 0;
+}
+
+.max-height-130{
+    max-height: 130px;
+}
+
+.margin-top-minus-8 {
+    margin-top: -8px;
+}
+
+.puzzle {
+   position: relative;
+}
+
+div.name {
+   white-space: nowrap;
+   position: absolute;
+   top: 25px;
+   left: 0;
+   width: 100%;
+}
+
+div.name h4 {
+   text-transform: uppercase;
+}
+
+#teamMap{
+    background: url('../img/noWayOutWatermark.png');
+    background-repeat: no-repeat;
+    background-size: 90%;
+    background-position: center;
+    background-color:white;
+    max-height: 1080px;
+    //width: 1920px;
+    border: 1px dotted grey;
+}
+
+.teamReport{
+    background-color: white;
+    max-height: 2200px;
+    margin-top: 125px;
+}
+
+.rpt-title {
+    text-align: center;
+}
+
+.leftPosition {
+    margin-left: 100px;
+}
+
+html {
+    height: 100%
+}
+
+.down-some {
+  position:relative;
+  top:75px;
+}
+
+.central-border-top {
+border-top:    1px solid black;
+border-right:  1px solid black;
+border-left:   1px solid black;
+padding-top: 20px;
+padding-bottom: 20px
+}
+
+.central-border-bottom {
+border-right:  1px solid black;
+border-left:   1px solid black;
+border-bottom:    1px solid black;
+padding-bottom: 60px;
+padding-left:5px;
+padding-right:5px;
+}
+
+.central-border-sides {
+ border-top: 1px solid black;
+ margin-top: 50px;
+}
+
+#special-spacing {
+  margin-bottom: 20px;
+  margin-top: 55px;
+}
+
+.ta-spacing {
+    margin-top: 23px;
+}
+
+.j-spacing {
+    margin-top: 60px;
+    margin-bottom: 35px;
+}
+
+#logo{
+    position: relative;
+    top: -125px;
+}
+
+.wrapper {
+    margin: auto;
+    height: 1080px;
+    width: 1920px;
+}
+
+#rpt-wrapper {
+    margin: auto;
+    width: 1700px;
+}
+
+#ttrpt-wrapper {
+    background-color: white;
+    margin: auto;
+    height: 2200px;
+    width: 1700px;
+    border: 1px dotted grey;
+}
+
+#bsrpt-wrapper {
+    background-color: white;
+    margin: auto;
+    height: 2200px;
+    width: 1700px;
+    border: 1px dotted grey;
+}
+
+.full-width-row {
+    max-width: none;
+}
+
+.column-count-2 {
+    display:inline-block;
+    column-count: 2;
+    line-height: 1;
+    text-align: left;
+}
+
+.downsize-rpt {
+    column-count: 2;
+}
+
+h4 {
+  font-size: 24px;
+  line-height: 0.95;
+}
+
+.stuffed {
+  font-size: 22px;
+}
+
+.report {
+  font-size: 22px;
+}
+
+.red {
+  color:red;
+}
+
+.scoot {
+  font-size: 22px;
+  padding-left: 75px;
+}
+
+.small-5 {
+    width: 43%;
+}
+
+.small-2 {
+    width: 14%;
+}

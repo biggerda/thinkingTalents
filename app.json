@@ -1,0 +1,7 @@
+{
+  "name": "Thinking Talents",
+  "description": "Thinking Talents App - NWO",
+  "repository": "https://github.com/biggerda/thinking-talents/tree/develop",
+  "keywords": ["team", "thinking", "hmdi"],
+  "image": "heroku/nodejs"
+}

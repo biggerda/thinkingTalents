@@ -1,0 +1,803 @@
+<div *ngIf="this.mode !== 'displayTeamMap'">
+
+  <div class="row text-center">
+    <div class="large-4 columns">
+      <label><h3>Name</h3>
+      </label>
+    </div>
+    <div class="large-8 columns">
+      <label><h3>Skills</h3>
+      </label>
+    </div>
+  </div>
+
+  <div class="row text-center">
+
+    <div class="large-4 columns">
+      <input type="text" placeholder="Michael Jordan" [(ngModel)]="currentPlayer.name" />
+
+      <button class="button success" (click)="addTeamMember()" [disabled]="mode == 'edit' ">Add Team Member</button>
+      <button class="button" (click)="updateMember()" [disabled]="mode == 'create' ">Update Team Member</button>
+      <button class="button secondary" (click)="clear(currentPlayer)" [disabled]="mode == 'create' ">Clear</button>
+      <button class="button alert" (click)="removeMember(currentPlayer)" [disabled]="mode !== 'edit' ">Remove Team Member</button>
+      <button class="button alert" (click)="startOver()" [disabled]="!team.players.length > 0 ">New Team Map</button>
+      <button class="button info" (click)="buildTeamMap()" [disabled]="!team.players.length > 0 ">Generate Team Map</button>
+
+      <br>
+
+      <input id="namecheck" type="checkbox" [(ngModel)]="hasTeamName"> &nbsp; Team Name?
+      <input type="text" placeholder="Team Name"  *ngIf="hasTeamName" [(ngModel)]="team.team_name" />
+    </div>
+
+
+    <div class="large-8 columns">
+      <div *ngFor="let skill of skillsList; let lastItem = last; let i = index;" class="large-3 columns" [ngClass]="{'end':lastItem}">
+        <label title="{{skill.description}}">{{skill.name}}</label><input id="checkbox1" type="checkbox"
+          (change)="updateSkills(skill)" [(ngModel)]="skill.checked">
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row" *ngIf="team.players.length > 0">
+    <label><h3>Players ({{this.team.players.length}})</h3>
+      </label>
+  </div>
+
+
+  <div class="row" *ngFor="let player of team.players; let i = index;">
+    <div class="large-12 columns">
+      <img src="../../assets/img/torsoIcon.png"><a href="#" title="{{player.name}}" (click)="editPlayer(player)">{{player.name}} ( {{player.talents.length}} Talents )</a>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="mode == 'displayTeamMap'">
+
+  <div class="row">
+        <h3>Previews of the map and reports can be seen below. Click on the buttons below to create an image of the object in a new tab. Right-click and <em>Save Image As</em>.</h3>        
+  </div>
+
+  <div class="row">
+
+    <button class="button alert" (click)="startOver()" [disabled]="!team.players.length > 0 ">New Team Map</button>
+    <button class="button secondary" (click)="editTeamMap()">Edit Team Map</button>
+    <button class="button" (click)="print()">Print Team Map</button>
+    <button class="button" (click)="printReport()">Print Team Report</button>
+    <button class="button" (click)="printBsReport()">Print Blind Spot Report</button>
+
+  </div>
+
+
+
+
+<div class="wrapper">
+
+  <div id="teamMap" class="padding-top-half">
+
+    <div class="row full-width-row">
+      <div class="columns small-4">
+        <div class="columns small-11 text-center bg-red small-centered">
+          <h1 style="margin-bottom: 0px" class="text-archivo">ANALYTIC</h1>
+          <h5 class="quad-desc">Concerned with data, facts,<br> numbers, being "logical" and rational</h5>
+        </div>
+      </div>
+
+      <div class="columns small-4">
+        <h1 id="main-title" class="text-center text-stencil text-bold">
+            <span *ngIf=" (!team.team_name) ">INTELLECTUAL CAPITAL</span>
+            <span *ngIf=" (team.team_name) ">{{team.team_name}}</span>
+            <br>
+            TEAM MAP
+        </h1>
+      </div>
+
+      <div class="columns small-4">
+        <div class="ccolumns small-11 text-center bg-green small-centered">
+          <h1 style="margin-bottom: 0px" class="text-archivo">INNOVATIVE</h1>
+          <h5 class="quad-desc">Concerned with the future, newness,<br> possibilities, strategy, "big picture"</h5>
+        </div>
+      </div>
+    </div>
+
+<div class="row text-center full-width-row">
+
+  <!--Analytical Traits-->
+  <div class="columns small-5">
+
+    <div class="row">
+      <div class="columns small-4 puzzle">
+        <h5 class="talentHeading">Organizing</h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+        <div class="name" *ngIf="isChecked('Organizing')" [ngClass]="{'column-count-2': getNames('Organizing').length > 8}">
+          <h4 *ngFor="let name of getNames('Organizing')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+      </div>
+
+      <div class="columns small-4 end puzzle">
+        <h5 class="ttheading">Achieving</h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+        <div class="name" *ngIf="isChecked('Achieving')" [ngClass]="{'column-count-2': getNames('Achieving').length > 8}">
+          <h4 *ngFor="let name of getNames('Achieving')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="columns small-4 puzzle">&nbsp;</div>
+      <div class="columns small-4 puzzle">&nbsp;</div>
+
+
+      <div class="columns small-4 end puzzle">
+        <h5 class="ttheading">Fixing It</h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+        <div class="name" *ngIf="isChecked('Fixing It')" [ngClass]="{'column-count-2': getNames('Fixing It').length > 9}">
+          <h4 *ngFor="let name of getNames('Fixing It')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="columns small-4 puzzle">
+        <h5 class="ttheading">Collecting</h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+        <div class="name" *ngIf="isChecked('Collecting')" [ngClass]="{'column-count-2': getNames('Collecting').length > 6}">
+          <h4 *ngFor="let name of getNames('Collecting')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+
+      </div>
+
+      <div class="columns small-4 end puzzle">
+        <h5 class="ttheading">Thinking Logically</h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+        <div class="name" *ngIf="isChecked('Thinking Logically')" [ngClass]="{'column-count-2': getNames('Thinking Logically').length > 6}">
+          <h4 *ngFor="let name of getNames('Thinking Logically')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!--Central Traits-->
+  <div class="columns small-2 central-border-top">
+    <div class="columns small-12 puzzle">
+      <h5 class="ttheading">Goal Setting</h5>
+      <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+      <div class="name" *ngIf="isChecked('Goal Setting')" [ngClass]="{'column-count-2': getNames('Goal Setting').length > 6}">
+        <h4 *ngFor="let name of getNames('Goal Setting')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+      </div>
+
+    </div>
+
+    <div class="columns small-12 margin-top-15 puzzle" id="special-spacing">
+      <h5 class="ttheading">Competing</h5>
+      <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+      <div class="name" *ngIf="isChecked('Competing')" [ngClass]="{'column-count-2': getNames('Competing').length > 6}">
+        <h4 *ngFor="let name of getNames('Competing')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+      </div>
+
+    </div>
+  </div>
+
+  <!--Innovative Traits-->
+  <div class="columns small-5">
+
+    <div class="row full-width-rowc">
+      <div class="columns small-4 puzzle">
+        <h5 class="ttheading">Thinking Forward</h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+        <div class="name" *ngIf="isChecked('Thinking Forward')" [ngClass]="{'column-count-2': getNames('Thinking Forward').length > 4}">
+          <h4 *ngFor="let name of getNames('Thinking Forward')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+      </div>
+
+      <div class="columns small-4 puzzle">
+        <h5 class="ttheading">Standing Out</h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+        <div class="name" *ngIf="isChecked('Standing Out')" [ngClass]="{'column-count-2': getNames('Standing Out').length > 4}">
+          <h4 *ngFor="let name of getNames('Standing Out')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+
+      </div>
+
+      <div class="columns small-4 puzzle">
+        <h5 class="ttheading">Loving Ideas</h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+        <div class="name" *ngIf="isChecked('Loving Ideas')" [ngClass]="{'column-count-2': getNames('Loving Ideas').length > 5}">
+          <h4 *ngFor="let name of getNames('Loving Ideas')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="columns small-4 small-offset-2 puzzle">
+        <h5 class="ttheading">Adapting</h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+        <div class="name" *ngIf="isChecked('Adapting')" [ngClass]="{'column-count-2': getNames('Adapting').length > 4}">
+          <h4 *ngFor="let name of getNames('Adapting')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+      </div>
+
+
+      <div class="columns small-4 end puzzle">
+        <h5 class="ttheading">Innovating</h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+        <div class="name" *ngIf="isChecked('Innovating')" [ngClass]="{'column-count-2': getNames('Innovating').length > 4}">
+          <h4 *ngFor="let name of getNames('Innovating')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="columns small-4 puzzle">
+        <h5 class="ttheading">Strategizing</h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+        <div class="name" *ngIf="isChecked('Strategizing')" [ngClass]="{'column-count-2': getNames('Strategizing').length > 6}">
+          <h4 *ngFor="let name of getNames('Strategizing')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+      </div>
+
+      <div class="columns small-4 end puzzle">
+        <h5 class="ttheading">Love of Learning</h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+        <div class="name" *ngIf="isChecked('Love of Learning')" [ngClass]="{'column-count-2': getNames('Love of Learning').length > 6}">
+          <h4 *ngFor="let name of getNames('Love of Learning')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<div class="row text-center full-width-row" style="margin-bottom:0.5em">
+
+  <!--Analytical Trait Row 2-->
+  <div class="columns small-5">
+
+    <div class="row central-border-sides">
+
+      <div class="columns small-4 puzzle">
+        <h5 class="ttheading">Focusing</h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+        <div class="name" *ngIf="isChecked('Focusing')" [ngClass]="{'column-count-2': getNames('Focusing').length > 6}">
+          <h4 *ngFor="let name of getNames('Focusing')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+
+      </div>
+
+      <div class="columns small-4 puzzle">
+        <h5 class="ttheading">Equalizing</h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+        <div class="name" *ngIf="isChecked('Equalizing')" [ngClass]="{'column-count-2': getNames('Equalizing').length > 6}">
+          <h4 *ngFor="let name of getNames('Equalizing')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+
+      </div>
+
+      <div class="columns small-4 down-some puzzle">
+        <h5 class="ttheading">Reliability </h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+        <div class="name" *ngIf="isChecked('Reliability')" [ngClass]="{'column-count-2': getNames('Reliability').length > 6}">
+          <h4 *ngFor="let name of getNames('Reliability')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="row padded-row">
+      <div class="columns small-4 puzzle">
+        <h5 class="ttheading">Taking Charge</h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+        <div class="name" *ngIf="isChecked('Taking Charge')" [ngClass]="{'column-count-2': getNames('Taking Charge').length > 6}">
+          <h4 *ngFor="let name of getNames('Taking Charge')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+
+
+      </div>
+      <div class="columns small-4 puzzle">
+        <h5 class="ttheading">Making It Happen</h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+        <div class="name" *ngIf="isChecked('Making It Happen')" [ngClass]="{'column-count-2': getNames('Making It Happen').length > 6}">
+          <h4 *ngFor="let name of getNames('Making It Happen')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+      </div>
+
+      <div class="columns small-4 down-some puzzle">
+        <h5 class="ttheading">Thinking Back</h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+        <div class="name" *ngIf="isChecked('Thinking Back')" [ngClass]="{'column-count-2': getNames('Thinking Back').length > 8}">
+          <h4 *ngFor="let name of getNames('Thinking Back')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row padded-row">
+      <div class="columns small-4 puzzle">
+        <h5 class="ttheading">Perfecting</h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+        <div class="name" *ngIf="isChecked('Perfecting')" [ngClass]="{'column-count-2': getNames('Perfecting').length > 6}">
+          <h4 *ngFor="let name of getNames('Perfecting')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+      </div>
+
+      <div class="columns small-4 end puzzle">
+        <h5 class="ttheading">Having Confidence</h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+        <div class="name" *ngIf="isChecked('Having Confidence')" [ngClass]="{'column-count-2': getNames('Having Confidence').length > 6}">
+          <h4 *ngFor="let name of getNames('Having Confidence')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!--Central Traits Row 2-->
+  <div class="columns small-2 central-border-bottom">
+    <div class="columns small-12 ta-spacing puzzle">
+      <h5 class="ttheading">Thinking Alone</h5>
+      <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+      <div class="name" *ngIf="isChecked('Thinking Alone')" [ngClass]="{'column-count-2': getNames('Thinking Alone').length > 6}">
+        <h4 *ngFor="let name of getNames('Thinking Alone')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+      </div>
+    </div>
+
+    <div class="columns small-12 j-spacing margin-bottom-15 puzzle">
+      <h5 class="ttheading">Joking</h5>
+      <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+      <div class="name" *ngIf="isChecked('Joking')" [ngClass]="{'column-count-2': getNames('Joking').length > 7}">
+        <h4 *ngFor="let name of getNames('Joking')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+      </div>
+
+    </div>
+  </div>
+
+  <!--Innovative Traits Row 2-->
+  <div class="columns small-5 central-border-sides ">
+
+    <div class="row">
+      <div class="columns small-3 puzzle">
+        <h5 class="ttheading">Optimism</h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+        <div class="name" *ngIf="isChecked('Optimism')" [ngClass]="{'column-count-2': getNames('Optimism').length > 6}">
+          <h4 *ngFor="let name of getNames('Optimism')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+      </div>
+
+      <div class="columns small-3 puzzle">
+        <h5 class="ttheading">Mentoring</h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+        <div class="name" *ngIf="isChecked('Mentoring')" [ngClass]="{'column-count-2': getNames('Mentoring').length > 6}">
+          <h4 *ngFor="let name of getNames('Mentoring')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+      </div>
+
+      <div class="columns small-3 puzzle">
+        <h5 class="ttheading">Peace-making</h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+        <div class="name" *ngIf="isChecked('Peace-making')" [ngClass]="{'column-count-2': getNames('Peace-making').length > 6}">
+          <h4 *ngFor="let name of getNames('Peace-making')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+      </div>
+
+      <div class="columns small-3 down-some puzzle">
+        <h5 class="ttheading">Individuality</h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+        <div class="name" *ngIf="isChecked('Individuality')" [ngClass]="{'column-count-2': getNames('Individuality').length > 6}">
+          <h4 *ngFor="let name of getNames('Individuality')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+      </div>
+   </div>
+
+   <div class="row padded-row">
+      <div class="columns small-3 puzzle">
+        <h5 class="ttheading">Including</h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+        <div class="name" *ngIf="isChecked('Including')" [ngClass]="{'column-count-2': getNames('Including').length > 6}">
+          <h4 *ngFor="let name of getNames('Including')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+      </div>
+
+      <div class="columns small-3 puzzle">
+        <h5 class="ttheading">Enrolling</h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+        <div class="name" *ngIf="isChecked('Enrolling')" [ngClass]="{'column-count-2': getNames('Enrolling').length > 6}">
+          <h4 *ngFor="let name of getNames('Enrolling')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+      </div>
+
+      <div class="columns small-3 puzzle">
+        <h5 class="ttheading">Creating Intimacy</h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png" />
+
+        <div class="name" *ngIf="isChecked('Creating Intimacy')" [ngClass]="{'column-count-2': getNames('Creating Intimacy').length > 6}">
+          <h4 *ngFor="let name of getNames('Creating Intimacy')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+      </div>
+
+      <div class="columns small-3 down-some puzzle">
+        <h5 class="ttheading">Feeling For Others</h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png" />
+
+        <div class="name" *ngIf="isChecked('Feeling For Others')" [ngClass]="{'column-count-2': getNames('Feeling For Others').length > 8}">
+          <h4 *ngFor="let name of getNames('Feeling For Others')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+      </div>
+    </div>
+
+   <div class="row padded-row">
+      <div class="columns small-3 puzzle">
+        <h5 class="ttheading">Connecting</h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+        <div class="name" *ngIf="isChecked('Connecting')" [ngClass]="{'column-count-2': getNames('Connecting').length > 6}">
+          <h4 *ngFor="let name of getNames('Connecting')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+      </div>
+
+      <div class="columns small-3 puzzle">
+        <h5 class="ttheading">Believing</h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+        <div class="name" *ngIf="isChecked('Believing')" [ngClass]="{'column-count-2': getNames('Believing').length > 6}">
+          <h4 *ngFor="let name of getNames('Believing')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+      </div>
+
+      <div class="columns small-3 end puzzle">
+        <h5 class="ttheading">Storytelling</h5>
+        <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
+
+        <div class="name" *ngIf="isChecked('Storytelling')" [ngClass]="{'column-count-2': getNames('Storytelling').length > 6}">
+          <h4 *ngFor="let name of getNames('Storytelling')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="row text-center margin-top-1 full-width-row max-height-130">
+    <div class="columns small-4">
+      <div class="columns small-11 text-center bg-blue small-centered">
+      <h1 style="margin-bottom: 0px;" class="text-archivo">PROCEDURAL</h1>
+      <h5 class="quad-desc">Concerned with process,<br> operations, logistics, tactics</h5>
+    </div>
+  </div>
+
+<div class="columns small-4" id="logo">
+  <h4 class="text-center"><img width="170" src="../../assets/img/noWayOutLogoSmall.png"></h4>
+  <h2 class="text-archivo">NOWAYOUTSTL.COM</h2>
+</div>
+
+<div class="columns small-4">
+  <div class="columns small-11 text-center bg-yellow small-centered">
+    <h1 style="margin-bottom: 0px;" class="text-archivo">RELATIONAL</h1>
+    <h5 class="quad-desc">Concerned with feelings, morale,<br> teamwork, development of people</h5>
+  </div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+<!--THINKING TALENTS REPORT 1-->
+<div id="rpt-wrapper">
+  
+  <div class="teamReport">
+
+    <div class="row leftPosition" *ngIf="team.players.length > 0">
+      <div class="large-12 columns">
+        <label><h3>Players ({{this.team.players.length}})</h3>
+          </label>
+      </div>
+    </div>
+
+
+      <div class="row leftPosition" *ngFor="let player of team.players; let i = index;">
+        <div class="large-12 columns" class="report">
+          <img src="../../assets/img/torsoIcon.png">
+
+            <strong>{{player.name}} ( {{player.talents.length}} Talents )</strong>
+
+            <span [ngClass]="{'red': player.a_talents == 0}">Analytic = {{player.a_talents}}</span>,
+            <span [ngClass]="{'red': player.i_talents == 0}">Innovative = {{player.i_talents}}</span>,
+            <span [ngClass]="{'red': player.r_talents == 0}">Relational = {{player.r_talents}}</span>,
+            <span [ngClass]="{'red': player.p_talents == 0}">Procedural = {{player.p_talents}}</span>
+
+            <br>
+            
+            <!-- Prints Blindspots for each Player -->
+            <ul class="scoot">
+              <li>
+                <span>Preference: </span>
+
+                <strong>
+                  <span *ngIf="(player.talentPref)">{{player.talentPref}}</span>
+                  <span *ngIf="(player.talentPref == 'Cerebral (A/I)')"> (Intellectual)</span>
+                  <span *ngIf="(player.talentPref == 'Left-Brained')"> (Rational)</span>
+                  <span *ngIf="(player.talentPref == 'Limbic (R/P)')"> (Instinctive)</span>
+                  <span *ngIf="(player.talentPref == 'Right-Brained')"> (Intuitive)</span>
+                </strong>
+              </li>
+            
+            <!-- Prints Blindspots for each Player -->
+              <li>
+                <span>Blind Spot: </span>
+                <span *ngIf="(player.blindspot)">{{player.blindspot}}</span>
+              </li>
+
+            </ul>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br><br><br>  
+  
+<!--THINKING TALENTS REPORT 2-->
+<div id="ttrpt-wrapper">
+
+  <div class="teamReport" [ngClass]="{'downsize-rpt': team.teampreferences.length > 10 }">
+
+    <div>
+        <h2 class="rpt-title">Thinking Talents Report</h2>
+    </div>
+
+
+    <div class="row leftPosition" *ngIf="team.teampreferences.length > 0">
+      <div class="large-12 columns">
+        <label><h3>Team Thinking Talents ({{team.teampreferences.length}})</h3>
+          </label>
+      </div>
+    </div>
+
+    
+    <div class="row leftPosition" *ngFor="let ttalent of team.teampreferences; let i = index;">
+      <div class="large-12 columns" class="report">
+        <img src="../../assets/img/torsoIcon.png">
+        <span>Thinking Preference:<strong> {{ttalent}} </strong></span>
+
+        [Player(s):
+        <span *ngFor="let ttplayer of team.players; let i = index;">
+          <span *ngIf="ttplayer.talentPref == ttalent"> {{ttplayer.name}}, </span>
+        </span>
+        ]
+
+        <ul class="scoot">
+          <li *ngIf="ttalent == 'Whole-Brained'" ><strong>Whole-Brained Thinking</strong> - Flexible in using different thinking styles based on situation-at-hand<br></li>
+          <li *ngIf="ttalent == 'Whole-Brained'" >Keywords: Communicator, Diverse, Balanced<br></li>
+          <li *ngIf="ttalent == 'Whole-Brained'" >Build bridges between functions, generations, levels, and any other disconnects<br></li>
+
+          <li *ngIf="ttalent == 'Analytical'" ><strong>Rational Thinkers</strong> - Concerned with facts, logic, statistics, data and references<br></li> 
+          <li *ngIf="ttalent == 'Analytical'" >Keywords: Academic, Realistic, Critical, Precise, Directive<br></li> 
+          <li *ngIf="ttalent == 'Analytical'" >Uses Rationale for listening, making decisions, and problem-solving<br></li> 
+          
+          <li *ngIf="ttalent == 'Procedural'" ><strong>Methodical Thinkers</strong> - Focused on details, reliability and history<br></li>
+          <li *ngIf="ttalent == 'Procedural'" >Keywords: Reliable, Strict, Task-driven, Safekeeping, Consistent<br></li>
+          <li *ngIf="ttalent == 'Procedural'" >Uses organization, order, and reflection for decision-making<br></li>
+
+          <li *ngIf="ttalent == 'Relational'" ><strong>Interpersonal Thinkers</strong> - Focused on feelings, emotional connections<br></li>        
+          <li *ngIf="ttalent == 'Relational'" >Keywords: Supportive, Expressive, Value-Oriented, Cooperative, Nurturing, Spiritual, Musical<br></li>        
+          <li *ngIf="ttalent == 'Relational'" >Makes decisions based on feelings, relationships, and the group’s interests<br></li>        
+
+          <li *ngIf="ttalent == 'Innovative'" ><strong>Experimental Thinkers</strong> - Focused on concepts, creativity and imagination<br></li>  
+          <li *ngIf="ttalent == 'Innovative'" >Keywords: Experimental, Futuristic, Inventive, Flexible, Impulsive, Rule Bender, Free-Spirited, Unplanned<br></li>  
+          <li *ngIf="ttalent == 'Innovative'" >Decision-making is based on possibilities<br></li>  
+        
+          <li *ngIf="ttalent == 'Cerebral (A/I)'" ><strong>Intellectual Thinkers</strong> - Focused on understanding with regard to abstract matters<br></li> 
+          <li *ngIf="ttalent == 'Cerebral (A/I)'" >Keywords: Thinker, Wise, Abstract Reasoning and Unstanding<br></li> 
+          <li *ngIf="ttalent == 'Cerebral (A/I)'" >Uses critical thinking to make decisions<br></li> 
+          
+          <li *ngIf="ttalent == 'Limbic (R/P)'" ><strong>Instinctual Thinkers</strong> - Focused on what feels natural<br></li>
+          <li *ngIf="ttalent == 'Limbic (R/P)'" >Keywords: Emotional, Dreamer, Instinctive, “Feeler”<br></li>
+          <li *ngIf="ttalent == 'Limbic (R/P)'" >Uses past experiences and relationships to make “gut-decisions” <br></li>
+
+          <li *ngIf="ttalent == 'Left-Brained'" ><strong>Concrete Thinkers</strong> - Focused on facts in the here and now, rather than abstract ideas<br></li>
+          <li *ngIf="ttalent == 'Left-Brained'" >Keywords: Learner, Sequencial, Rigid<br></li>
+          <li *ngIf="ttalent == 'Left-Brained'" >Problem solving in systemic fashion using literal meanings and facts<br></li>
+
+          <li *ngIf="ttalent == 'Right-Brained'" ><strong>Intuitive Thinkers</strong> - Focused on what feels true, even without conscious reasoning<br></li>   
+          <li *ngIf="ttalent == 'Right-Brained'" >Keywords: Creative, Passionate, Free-Spirited, Intuitive, Imaginative, Daydreamer<br></li> 
+          <li *ngIf="ttalent == 'Right-Brained'" >Uses visual cues, nonverbal cues, and imagination to make decisions<br></li> 
+          
+          <li *ngIf="ttalent == 'Facts vs. Feelings (A/R)'" ><strong>Facts vs. Feelings</strong> - Use feelings with facts to rationalize<br></li>
+          <li *ngIf="ttalent == 'Facts vs. Feelings (A/R)'" >Keywords: Objective, Direct, Sensitive, People-pleasing, Diplomatic<br></li>
+          <li *ngIf="ttalent == 'Facts vs. Feelings (A/R)'" >Weighs between logic and emotions to make decisions<br></li>
+          <li *ngIf="ttalent == 'Facts vs. Feelings (A/R)'" >May garble facts to fit emotional agenda<br></li>
+
+          <li *ngIf="ttalent == 'Entrepreneur (I/P)'" ><strong>Entrepreneurial Thinkers</strong> - Recognize opportunities and understand how and when to capitalize on those ideas<br></li>
+          <li *ngIf="ttalent == 'Entrepreneur (I/P)'" >Keywords: Promotor, Business Person, Optimistic, Self-Reliant<br></li>
+          <li *ngIf="ttalent == 'Entrepreneur (I/P)'" >Uses past experiences and imaginative ideas to make decisions<br></li>
+      
+          <li *ngIf="ttalent == 'Limbic (R/P) / Right-Brained'" >Combines organization cues with emotional and creative modes<br></li>
+          <li *ngIf="ttalent == 'Limbic (R/P) / Right-Brained'" >Builds on ideas of others and implements. Intuition and brainstorming are important<br></li>
+          <li *ngIf="ttalent == 'Limbic (R/P) / Right-Brained'" >May overlook gathering facts, details, or crunching the numbers<br></li>
+
+          <li *ngIf="ttalent == 'Cerebral (A/I) / Right-Brained'" >Combines analytical processing with intuitive thinking and creative ability<br></li>
+          <li *ngIf="ttalent == 'Cerebral (A/I) / Right-Brained'" >Utilizes visualization, free-flow brainstorming, intuition, and strategy to solve problems<br></li>
+          <li *ngIf="ttalent == 'Cerebral (A/I) / Right-Brained'" >May overlook details and the “proper” sequence<br></li>
+  
+          <li *ngIf="ttalent == 'Cerebral (A/I) / Left-Brained'" >Combines organized facts with organization, while using creativity and taking risks<br></li>
+          <li *ngIf="ttalent == 'Cerebral (A/I) / Left-Brained'" >Uses factual analysis, step-by-step processes, and modeling to make decisions<br></li>
+          <li *ngIf="ttalent == 'Cerebral (A/I) / Left-Brained'" >May overlook asking for opinions and thinking about impact to others<br></li>
+
+          <li *ngIf="ttalent == 'Limbic (R/P) / Left-Brained'" >Balance between logical, sequential, and emotional thinking<br></li> 
+          <li *ngIf="ttalent == 'Limbic (R/P) / Left-Brained'" >Solves problems by gathering facts, creating time lines, and asking others for input<br></li> 
+          <li *ngIf="ttalent == 'Limbic (R/P) / Left-Brained'" >May overlook “big picture” or unusual possibilities<br></li> 
+
+        </ul>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+  <br><br><br>
+      
+  <!--BLIND SPOTS REPORT-->
+  <div id="bsrpt-wrapper">
+    
+    <div class="teamReport"  [ngClass]="{'downsize-rpt': team.teamblindspots.length > 10 }">
+  
+      <div>
+          <h2 class="rpt-title">Blind Spots Report</h2>
+      </div>
+
+
+      <div class="row leftPosition" *ngIf="team.teamblindspots.length > 0">
+        <div class="large-12 columns">
+          <label><h3>Team Blindspots ({{team.teamblindspots.length}})</h3>
+            </label>
+        </div>
+      </div>
+    
+      
+      <div class="row leftPosition" *ngFor="let tbspot of team.teamblindspots; let i = index;">
+        <div class="large-12 columns" class="report">
+          <img src="../../assets/img/blindicon.png">
+          <span>Blind Spot:<strong> {{tbspot}} </strong></span>
+
+          [Player(s):
+          <span *ngFor="let bspotplayer of team.players; let i = index;">
+            <span *ngIf="bspotplayer.blindspot == tbspot"> {{bspotplayer.name}}, </span>
+          </span>
+          ]
+
+          <ul class="scoot">
+            <li *ngIf="tbspot == 'None (Whole-Brained)'" >Swimming, Camping, Basketball, Escape Rooms<br></li>
+            <li *ngIf="tbspot == 'None (Whole-Brained)'" >Caring For Pets<br></li>
+            <li *ngIf="tbspot == 'None (Whole-Brained)'" >Hosting A Family Outing<br></li>
+            <li *ngIf="tbspot == 'None (Whole-Brained)'" >Play A Funny Prank On Someone<br></li>
+            <li *ngIf="tbspot == 'None (Whole-Brained)'" >Starting A Podcast<br></li>
+            <li *ngIf="tbspot == 'None (Whole-Brained)'" >Starting A Non-For-Profit Organization<br></li>
+
+            <li *ngIf="tbspot == 'Analytical'" >Take Apart A Frequently Used Machine and Put It Back Together<br></li>
+            <li *ngIf="tbspot == 'Analytical'" >Words With Friends, Jigsaw Puzzles<br></li>
+            <li *ngIf="tbspot == 'Analytical'" >Watch TV Court Shows And Predict The Verdict<br></li>
+            <li *ngIf="tbspot == 'Analytical'" >Pick A Side On Controversal Conversations<br></li>
+            
+            <li *ngIf="tbspot == 'Procedural'" >Master A New Skill<br></li>
+            <li *ngIf="tbspot == 'Procedural'" >Assemble Furniture By The Instructions<br></li>
+            <li *ngIf="tbspot == 'Procedural'" >Prepare A Family Tree<br></li>
+            <li *ngIf="tbspot == 'Procedural'" >Learn A Line Dance (Cha Cha Slide)<br></li>
+            
+            <li *ngIf="tbspot == 'Relational'" >Karaoke<br></li>
+            <li *ngIf="tbspot == 'Relational'" >People Watching, Join Snapchat<br></li>
+            <li *ngIf="tbspot == 'Relational'" >Take 10 Minute "Deep Breathing Break" Morning/Noon/Night<br></li>
+            <li *ngIf="tbspot == 'Relational'" >Play With Children The Way They Want To Play<br></li>          
+
+            <li *ngIf="tbspot == 'Innovative'" >Nature Watching, Photograpy<br></li>
+            <li *ngIf="tbspot == 'Innovative'" >Attend And Eventually Participate In An Open Mic Night<br></li>
+            <li *ngIf="tbspot == 'Innovative'" >Design A T-Shirt, Personal Brand or Cartoon<br></li>    
+            <li *ngIf="tbspot == 'Innovative'" >Repurpose Old Junk In Cool Ways<br></li>
+          
+            <li *ngIf="tbspot == 'Cerebral (A/I)'" >Learn To Play An Instrument<br></li>
+            <li *ngIf="tbspot == 'Cerebral (A/I)'" >Wine Tasting<br></li>
+            <li *ngIf="tbspot == 'Cerebral (A/I)'" >Allow Yourself to Daydream For 15 Minutes Before Getting Out Of Bed<br></li>
+            <li *ngIf="tbspot == 'Cerebral (A/I)'" >Mold With Clay<br></li>
+
+            <li *ngIf="tbspot == 'Limbic (R/P)'" >Gardening<br></li>
+            <li *ngIf="tbspot == 'Limbic (R/P)'" >Listen To The Instrumental Version of Your Favorite Album<br></li>
+            <li *ngIf="tbspot == 'Limbic (R/P)'" >Volunteer<br></li>
+            <li *ngIf="tbspot == 'Limbic (R/P)'" >Meet A New Person Everyday For A Week<br></li>
+            <li *ngIf="tbspot == 'Limbic (R/P)'" >Thoroughly Clean Your Living Space<br></li>
+
+            <li *ngIf="tbspot == 'Left-Brained'" >Crosswords, Sudoku, Brainteasers<br></li>
+            <li *ngIf="tbspot == 'Left-Brained'" >DIY Projects<br></li>
+            <li *ngIf="tbspot == 'Left-Brained'" >Write A Critical Review<br></li>
+            <li *ngIf="tbspot == 'Left-Brained'" >Record A Podcast<br></li>              
+
+            <li *ngIf="tbspot == 'Right-Brained'" >Yoga, Crossfit, Or A New Sport<br></li>
+            <li *ngIf="tbspot == 'Right-Brained'" >Cook For Others<br></li>
+            <li *ngIf="tbspot == 'Right-Brained'" >Salsa Dance Classes<br></li>
+            <li *ngIf="tbspot == 'Right-Brained'" >Wear Something Silly Once A Week<br></li>      
+            <li *ngIf="tbspot == 'Right-Brained'" >Attend A Paint And Sip Or Model Painting Class<br></li>  
+            
+            <li *ngIf="tbspot == 'Facts vs. Feelings (A/R)'" >Golf<br></li>
+            <li *ngIf="tbspot == 'Facts vs. Feelings (A/R)'" >Billiards or Darts<br></li>
+            <li *ngIf="tbspot == 'Facts vs. Feelings (A/R)'" >Strategy Games and Puzzles<br></li>
+            <li *ngIf="tbspot == 'Facts vs. Feelings (A/R)'" >Playing Dominos<br></li> 
+
+            <li *ngIf="tbspot == 'Entrepreneur (I/P)'" >Fly A Drone<br></li>
+            <li *ngIf="tbspot == 'Entrepreneur (I/P)'" >Invent A "Gourmet" Dish And Prepare It<br></li>
+            <li *ngIf="tbspot == 'Entrepreneur (I/P)'" >Develop A Personal Budget<br></li>
+            <li *ngIf="tbspot == 'Entrepreneur (I/P)'" >Organize Your Pictures and Music Files<br></li>
+            <li *ngIf="tbspot == 'Entrepreneur (I/P)'" >Be Exactly On Time All Day<br></li>
+        
+            <li *ngIf="tbspot == 'Limbic (R/P) / Right-Brained'" >Listen To The Instrumental Version of Your Favorite Album<br></li>
+            <li *ngIf="tbspot == 'Limbic (R/P) / Right-Brained'" >Meet A New Person Everyday For A Week<br></li>
+            <li *ngIf="tbspot == 'Limbic (R/P) / Right-Brained'" >Thoroughly Clean Your Living Space<br></li>
+            <li *ngIf="tbspot == 'Limbic (R/P) / Right-Brained'" >Group Exercise, Pilates, Running<br></li>
+            <li *ngIf="tbspot == 'Limbic (R/P) / Right-Brained'" >Wear Something Silly Once A Week<br></li>
+            <li *ngIf="tbspot == 'Limbic (R/P) / Right-Brained'" >Cook For Others<br></li>
+
+            <li *ngIf="tbspot == 'Cerebral (A/I) / Right-Brained'" >Learn To Play An Instrument<br></li>
+            <li *ngIf="tbspot == 'Cerebral (A/I) / Right-Brained'" >Wine Tasting<br></li>
+            <li *ngIf="tbspot == 'Cerebral (A/I) / Right-Brained'" >Allow Yourself to Daydream For 15 Minutes Before Getting Out Of Bed<br></li>
+            <li *ngIf="tbspot == 'Cerebral (A/I) / Right-Brained'" >Yoga<br></li>
+            <li *ngIf="tbspot == 'Cerebral (A/I) / Right-Brained'" >Wear Something Silly Once A Week<br></li>
+            <li *ngIf="tbspot == 'Cerebral (A/I) / Right-Brained'" >Cook For Others<br></li>
+
+            <li *ngIf="tbspot == 'Cerebral (A/I) / Left-Brained'" >Learn To Play An Instrument<br></li>
+            <li *ngIf="tbspot == 'Cerebral (A/I) / Left-Brained'" >Wine Tasting<br></li>
+            <li *ngIf="tbspot == 'Cerebral (A/I) / Left-Brained'" >Allow Yourself to Daydream For 15 Minutes Before Getting Out Of Bed<br></li>
+            <li *ngIf="tbspot == 'Cerebral (A/I) / Left-Brained'" >DIY Projects<br></li>
+            <li *ngIf="tbspot == 'Cerebral (A/I) / Left-Brained'" >Write A Critical Review<br></li>
+            <li *ngIf="tbspot == 'Cerebral (A/I) / Left-Brained'" >Record A Podcast<br></li>
+
+            <li *ngIf="tbspot == 'Limbic (R/P) / Left-Brained'" >Listen To The Instrumental Version of Your Favorite Album<br></li> 
+            <li *ngIf="tbspot == 'Limbic (R/P) / Left-Brained'" >Meet A New Person Everyday For A Week<br></li> 
+            <li *ngIf="tbspot == 'Limbic (R/P) / Left-Brained'" >Thoroughly Clean Your Living Space<br></li> 
+            <li *ngIf="tbspot == 'Limbic (R/P) / Left-Brained'" >DIY Projects<br></li> 
+            <li *ngIf="tbspot == 'Limbic (R/P) / Left-Brained'" >Write A Critical Review<br></li> 
+            <li *ngIf="tbspot == 'Limbic (R/P) / Left-Brained'" >Record A Podcast<br></li> 
+          </ul>
+
+        </div>
+      </div>
+    </div>
+  </div>
+      <br><br><br><br><br><br><br>
+</div>
+
+
+
