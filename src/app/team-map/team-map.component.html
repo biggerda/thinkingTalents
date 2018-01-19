@@ -389,7 +389,7 @@
         <h5 class="ttheading">Optimism</h5>
         <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
 
-        <div class="name" *ngIf="isChecked('Optimism')" [ngClass]="{'column-count-2': getNames('Optimism').length > 6}">
+        <div class="name" *ngIf="isChecked('Optimism')" [ngClass]="{'column-count-2': getNames('Optimism').length > 6, 'name-shift': getNames('Optimism').length > 6}">
           <h4 *ngFor="let name of getNames('Optimism')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
         </div>
       </div>

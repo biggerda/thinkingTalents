@@ -182,6 +182,10 @@ div.name {
    width: 100%;
 }
 
+div.name-shift {
+    left: 5px;
+}
+
 div.name h4 {
    text-transform: uppercase;
 }
@@ -297,7 +301,6 @@ padding-right:5px;
     column-count: 2;
     line-height: 1;
     text-align: left;
-    left: 5px;
 }
 
 .downsize-rpt {
