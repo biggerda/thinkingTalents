@@ -389,7 +389,7 @@
         <h5 class="ttheading">Optimism</h5>
         <img width="105" src="../../assets/img/puzzle-icon-empty.png"/>
 
-        <div class="name" *ngIf="isChecked('Optimism')" [ngClass]="{'column-count-2': getNames('Optimism').length > 6, 'name-shift': getNames('Optimism').length > 6}">
+        <div class="name" *ngIf="isChecked('Optimism')" [ngClass]="{'column-count-2': getNames('Optimism').length > 6}">
           <h4 *ngFor="let name of getNames('Optimism')" class="text-archivo margin-bottom-0" [ngClass]="{'stuffed': isStuffed()}">{{name}}</h4>
         </div>
       </div>
@@ -703,35 +703,39 @@
           ]
 
           <ul class="scoot">
-            <li *ngIf="tbspot == 'None (Whole-Brained)'" >Swimming, Camping, Basketball, Escape Rooms<br></li>
-            <li *ngIf="tbspot == 'None (Whole-Brained)'" >Caring For Pets<br></li>
+            <li *ngIf="tbspot == 'None (Whole-Brained)'" >Swimming, Basketball<br></li>
+            <li *ngIf="tbspot == 'None (Whole-Brained)'" >Caring For A New Pet<br></li>
             <li *ngIf="tbspot == 'None (Whole-Brained)'" >Hosting A Family Outing<br></li>
-            <li *ngIf="tbspot == 'None (Whole-Brained)'" >Play A Funny Prank On Someone<br></li>
+            <li *ngIf="tbspot == 'None (Whole-Brained)'" >Coordinate A Funny Prank On Someone<br></li>
+            <li *ngIf="tbspot == 'None (Whole-Brained)'" >Organizating A Camping Trip<br></li>
             <li *ngIf="tbspot == 'None (Whole-Brained)'" >Starting A Non-For-Profit Organization<br></li>
 
-            <li *ngIf="tbspot == 'Analytical'" >Darts And Billards<br></li>
+            <li *ngIf="tbspot == 'Analytical'" >Play Darts, Billards, Jigsaw Puzzles<br></li>
             <li *ngIf="tbspot == 'Analytical'" >Take Apart A Frequently Used Machine and Put It Back Together<br></li>
-            <li *ngIf="tbspot == 'Analytical'" >Words With Friends, Jigsaw Puzzles<br></li>
             <li *ngIf="tbspot == 'Analytical'" >Watch TV Court Shows And Predict The Verdict<br></li>
             <li *ngIf="tbspot == 'Analytical'" >Pick A Side On Controversal Conversations<br></li>
-            
+            <li *ngIf="tbspot == 'Analytical'" >Record A Podcast<br></li>
+            <li *ngIf="tbspot == 'Analytical'" >DIY Projects<br></li>
  
+            <li *ngIf="tbspot == 'Procedural'" >Tennis, Bowling, Ping Pong<br></li>            
             <li *ngIf="tbspot == 'Procedural'" >Assemble Furniture By The Instructions<br></li>
-            <li *ngIf="tbspot == 'Procedural'" >Prepare A Family Tree<br></li>
+            <li *ngIf="tbspot == 'Procedural'" >Create A Family Heritage Scrapbook<br></li>
             <li *ngIf="tbspot == 'Procedural'" >Learn A Line Dance (Cha Cha Slide)<br></li>
             
             <li *ngIf="tbspot == 'Relational'" >Karaoke<br></li>
             <li *ngIf="tbspot == 'Relational'" >People Watching, Join Snapchat<br></li>
-            <li *ngIf="tbspot == 'Relational'" >Take 10 Minute "Deep Breathing Break" Morning/Noon/Night<br></li>
-            <li *ngIf="tbspot == 'Relational'" >Find Kids And Have Them Organize A Game<br></li>          
+            <li *ngIf="tbspot == 'Relational'" >Learn A Beginner's Yoga Pose, Downward Dog<br></li>
+            <li *ngIf="tbspot == 'Relational'" >Find Kids And Play A Game By Their Rules Only<br></li>          
 
-            <li *ngIf="tbspot == 'Innovative'" >Nature Watching, Photograpy<br></li>
+            <li *ngIf="tbspot == 'Innovative'" >Nature Watching, Photograpy, Walking<br></li>
             <li *ngIf="tbspot == 'Innovative'" >Play With Clay<br></li>
-            <li *ngIf="tbspot == 'Innovative'" >Design A T-Shirt, Personal Brand or Cartoon<br></li>    
-            <li *ngIf="tbspot == 'Innovative'" >Repurpose Old Junk In Cool Ways<br></li>
+            <li *ngIf="tbspot == 'Innovative'" >Design A Logo And Have It Printed On A T-Shirt<br></li> 
+            <li *ngIf="tbspot == 'Innovative'" >Create A Family Crest<br></li>
           
+            <li *ngIf="tbspot == 'Cerebral (A/I)'" >Chess<br></li>
             <li *ngIf="tbspot == 'Cerebral (A/I)'" >Learn To Play A New Instrument<br></li>
             <li *ngIf="tbspot == 'Cerebral (A/I)'" >Wine Tasting<br></li>
+            <li *ngIf="tbspot == 'Cerebral (A/I)'" >Drive To No Where Without Feeling Guilty<br></li>
             <li *ngIf="tbspot == 'Cerebral (A/I)'" >Allow Yourself to Daydream For 15 Minutes Before Getting Out Of Bed<br></li>
 
             <li *ngIf="tbspot == 'Limbic (R/P)'" >Gardening<br></li>
@@ -739,50 +743,48 @@
             <li *ngIf="tbspot == 'Limbic (R/P)'" >Volunteer<br></li>
             <li *ngIf="tbspot == 'Limbic (R/P)'" >Meet A New Person Everyday For A Week<br></li>
             <li *ngIf="tbspot == 'Limbic (R/P)'" >Thoroughly Clean Your Living Space<br></li>
+            <li *ngIf="tbspot == 'Limbic (R/P)'" >Spin Class<br></li>
 
-            <li *ngIf="tbspot == 'Left-Brained'" >Crosswords, Sudoku, Brainteasers<br></li>
-            <li *ngIf="tbspot == 'Left-Brained'" >DIY Projects<br></li>
-            <li *ngIf="tbspot == 'Left-Brained'" >Write A Critical Review<br></li>
-            <li *ngIf="tbspot == 'Left-Brained'" >Record A Podcast<br></li>              
+            <li *ngIf="tbspot == 'Left-Brained'" >Write A Critical Review Of Your Favorite Movie<br></li>  
+            <li *ngIf="tbspot == 'Left-Brained'" >Go Fishing<br></li>  
+            <li *ngIf="tbspot == 'Left-Brained'" >Enter A Poker Tournament<br></li>  
+            <li *ngIf="tbspot == 'Left-Brained'" >Pick A Spectator Sport And Keep A Scorecard<br></li>          
 
-            <li *ngIf="tbspot == 'Right-Brained'" >Yoga, Crossfit, Or A New Sport<br></li>
             <li *ngIf="tbspot == 'Right-Brained'" >Cook For Others<br></li>
-            <li *ngIf="tbspot == 'Right-Brained'" >Salsa Dance Classes<br></li>
+            <li *ngIf="tbspot == 'Right-Brained'" >Take An Improv Class<br></li>
             <li *ngIf="tbspot == 'Right-Brained'" >Wear Something Silly Once A Week<br></li>      
-            <li *ngIf="tbspot == 'Right-Brained'" >Attend A Paint And Sip Or Model Painting Class<br></li>  
+            <li *ngIf="tbspot == 'Right-Brained'" >Attend A Paint And Sip<br></li>  
             
-            <li *ngIf="tbspot == 'Facts vs. Feelings (A/R)'" >Golf<br></li>
-            <li *ngIf="tbspot == 'Facts vs. Feelings (A/R)'" >Strategy Games and Puzzles<br></li>
+            <li *ngIf="tbspot == 'Facts vs. Feelings (A/R)'" >Golfing<br></li>
+            <li *ngIf="tbspot == 'Facts vs. Feelings (A/R)'" >Strategy Games and Escape Rooms<br></li>
             <li *ngIf="tbspot == 'Facts vs. Feelings (A/R)'" >Playing Dominos<br></li> 
+            <li *ngIf="tbspot == 'Facts vs. Feelings (A/R)'" >Participating In Scavenger Hunts<br></li> 
 
             <li *ngIf="tbspot == 'Entrepreneur (I/P)'" >Learn To Fly A Drone<br></li>
             <li *ngIf="tbspot == 'Entrepreneur (I/P)'" >Invent A "Gourmet" Dish And Prepare It<br></li>
             <li *ngIf="tbspot == 'Entrepreneur (I/P)'" >Be Exactly On Time All Day<br></li>
+            <li *ngIf="tbspot == 'Entrepreneur (I/P)'" >Start A Personal Blog<br></li>
         
+            <li *ngIf="tbspot == 'Limbic (R/P) / Right-Brained'" >Group Exercise, Pilates, Aerobics Class<br></li>
             <li *ngIf="tbspot == 'Limbic (R/P) / Right-Brained'" >Listen To The Instrumental Version of Your Favorite Album<br></li>
             <li *ngIf="tbspot == 'Limbic (R/P) / Right-Brained'" >Meet A New Person Everyday For A Week<br></li>
             <li *ngIf="tbspot == 'Limbic (R/P) / Right-Brained'" >Thoroughly Clean Your Living Space<br></li>
-            <li *ngIf="tbspot == 'Limbic (R/P) / Right-Brained'" >Group Exercise, Pilates, Running<br></li>
-            <li *ngIf="tbspot == 'Limbic (R/P) / Right-Brained'" >Wear Something Silly Once A Week<br></li>
-            <li *ngIf="tbspot == 'Limbic (R/P) / Right-Brained'" >Cook For Others<br></li>
-            <li *ngIf="tbspot == 'Cerebral (A/I) / Right-Brained'" >Learn To Play An Instrument<br></li>
-            <li *ngIf="tbspot == 'Cerebral (A/I) / Right-Brained'" >Wine Tasting<br></li>
-            <li *ngIf="tbspot == 'Cerebral (A/I) / Right-Brained'" >Allow Yourself to Daydream For 15 Minutes Before Getting Out Of Bed<br></li>
-            <li *ngIf="tbspot == 'Cerebral (A/I) / Right-Brained'" >Yoga<br></li>
-            <li *ngIf="tbspot == 'Cerebral (A/I) / Right-Brained'" >Wear Something Silly Once A Week<br></li>
-            <li *ngIf="tbspot == 'Cerebral (A/I) / Right-Brained'" >Cook For Others<br></li>
-            <li *ngIf="tbspot == 'Cerebral (A/I) / Left-Brained'" >Learn To Play An Instrument<br></li>
-            <li *ngIf="tbspot == 'Cerebral (A/I) / Left-Brained'" >Wine Tasting<br></li>
-            <li *ngIf="tbspot == 'Cerebral (A/I) / Left-Brained'" >Allow Yourself to Daydream For 15 Minutes Before Getting Out Of Bed<br></li>
-            <li *ngIf="tbspot == 'Cerebral (A/I) / Left-Brained'" >DIY Projects<br></li>
-            <li *ngIf="tbspot == 'Cerebral (A/I) / Left-Brained'" >Write A Critical Review<br></li>
-            <li *ngIf="tbspot == 'Cerebral (A/I) / Left-Brained'" >Record A Podcast<br></li>
-            <li *ngIf="tbspot == 'Limbic (R/P) / Left-Brained'" >Listen To The Instrumental Version of Your Favorite Album<br></li> 
-            <li *ngIf="tbspot == 'Limbic (R/P) / Left-Brained'" >Meet A New Person Everyday For A Week<br></li> 
-            <li *ngIf="tbspot == 'Limbic (R/P) / Left-Brained'" >Thoroughly Clean Your Living Space<br></li> 
-            <li *ngIf="tbspot == 'Limbic (R/P) / Left-Brained'" >DIY Projects<br></li> 
-            <li *ngIf="tbspot == 'Limbic (R/P) / Left-Brained'" >Write A Critical Review<br></li> 
-            <li *ngIf="tbspot == 'Limbic (R/P) / Left-Brained'" >Record A Podcast<br></li> 
+
+            <li *ngIf="tbspot == 'Cerebral (A/I) / Right-Brained'" >Find Something In Your House To Fix<br></li>
+            <li *ngIf="tbspot == 'Cerebral (A/I) / Right-Brained'" >Take A 30 Minute Walk Every Night For A Week<br></li>
+            <li *ngIf="tbspot == 'Cerebral (A/I) / Right-Brained'" >Attend A Play At A Theater<br></li>
+            <li *ngIf="tbspot == 'Cerebral (A/I) / Right-Brained'" >Build A Personal Computer<br></li>
+
+            <li *ngIf="tbspot == 'Cerebral (A/I) / Left-Brained'" >Learn How To Ski<br></li>
+            <li *ngIf="tbspot == 'Cerebral (A/I) / Left-Brained'" >Find A Mistake In Your Bank Statement<br></li>
+            <li *ngIf="tbspot == 'Cerebral (A/I) / Left-Brained'" >Research And Purchase A Stock On The Exchange Market<br></li>
+            <li *ngIf="tbspot == 'Cerebral (A/I) / Left-Brained'" >Draft The Blueprint Of Your Dream Home<br></li>
+
+            <li *ngIf="tbspot == 'Limbic (R/P) / Left-Brained'" >Join A Book Club<br></li> 
+            <li *ngIf="tbspot == 'Limbic (R/P) / Left-Brained'" >Become A Mentor<br></li> 
+            <li *ngIf="tbspot == 'Limbic (R/P) / Left-Brained'" >Volunteer For The Organization Of Your Choice<br></li> 
+            <li *ngIf="tbspot == 'Limbic (R/P) / Left-Brained'" >Find Someone Who Has Taught You Something And Find A Way To Thank Them<br></li> 
+
           </ul>
 
         </div>
